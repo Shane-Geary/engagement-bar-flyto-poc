@@ -49,11 +49,13 @@ const GlowstikMap = () => {
                 }}
                 onLoad={() => {
                     setMapLoaded(true)
-                    setDialogOpen(true)
                     getCurrentGeoPosition((position) => {
                         setGeoCoords({geoLat: position.coords.latitude, geoLong: position.coords.longitude})
                         setGeoReceived(true)
                     })
+                }}
+                onRender={(e) => {
+                    setDialogOpen(true)
                 }}
                 {...viewport}
             >
