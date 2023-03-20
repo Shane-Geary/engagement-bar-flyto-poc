@@ -1,9 +1,10 @@
 // Copyright 2023 Glowstik Inc. All rights reserved!
-import {useState, useRef, useEffect} from 'react'
+import {useState, useRef} from 'react'
 
 import ReactMapGL from 'react-map-gl'
 
 import getCurrentGeoPosition from './Hooks/useGeolocation'
+import useFlyto from './Hooks/useFlyto'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -22,28 +23,7 @@ const GlowstikMap = () => {
 
     const [geoCoords, setGeoCoords] = useState({geoLat: null, geoLong: null})
 
-    useEffect(() => {
-        console.log(mapRef.current)
-        const flyToAnimation = async () => {
-			if(mapLoaded && geoReceived) {
-				mapRef.current.flyTo({
-					center: [geoCoords.geoLong, geoCoords.geoLat], // The coordinates returned from geolocation api where we 'fly to'
-					zoom: 13, // The zoom level of the map that the flyTo stops on
-					preloadOnly: true,
-				})
-				await mapRef.current.once('idle')
-				mapRef.current.flyTo({
-					center: [geoCoords.geoLong, geoCoords.geoLat], // The coordinates returned from geolocation api where we 'fly to'
-					zoom: 13, // The zoom level of the map that the flyTo stops on
-					duration: 2500, // How long the animation takes from start to finish
-					easing: (t) => { // ease-out
-						return t
-					}
-				})
-			}
-		}
-		flyToAnimation()
-    }, [mapLoaded, geoReceived])
+    useFlyto(mapRef, geoCoords, mapLoaded, geoReceived)
 
     return (
         <ReactMapGL
