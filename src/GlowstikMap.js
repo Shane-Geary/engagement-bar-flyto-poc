@@ -15,23 +15,23 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
 
-const GlowstikMap = () => {
+const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
 
     const mapRef = useRef(null)
 
     const [viewport, setViewport] = useState({
         latitude: 34.601928,
         longitude: -102.563212,
-        zoom: 1.5
+        zoom: .9
     })
 
-    const [mapLoaded, setMapLoaded] = useState(false)
     const [geoReceived, setGeoReceived] = useState(false)
     const [dialogOpen, setDialogOpen] = useState(false)
 
     const [geoCoords, setGeoCoords] = useState({geoLat: null, geoLong: null})
 
     useFlyto(mapRef, geoCoords, mapLoaded, geoReceived)
+
 
     return (
         <ThemeProvider theme={muiStyles}>
@@ -73,8 +73,13 @@ const GlowstikMap = () => {
                     onClose={() => {
                         setDialogOpen(false)
                     }}
+                    sx={{
+                        opacity: 0
+                    }}
                 >
-                    {/* Hello World */}
+                    <div>
+                        {/* Hello World */}
+                    </div>
                 </Dialog>
             </ReactMapGL>
         </ThemeProvider>
