@@ -15,9 +15,14 @@ const GlowstikMap = () => {
         zoom: 1.5
     })
 
-    getCurrentGeoPosition((position) => {
-        console.log(position)
-    })
+    const [geoCoords, setGeoCoords] = useState({geoLat: null, geoLong: null})
+
+    const getCoordinates = () => {
+        getCurrentGeoPosition((position) => {
+          console.log(position)
+          setGeoCoords({geoLat: position.coords.latitude, geoLong: position.coords.longitude})
+        })
+    }
 
     return (
         <ReactMapGL
@@ -35,8 +40,8 @@ const GlowstikMap = () => {
             onMove={(e) => {
                 setViewport(e.viewState)
             }}
-            onClick={(e) => {
-                console.log(e)
+            onLoad={() => {
+                getCoordinates()
             }}
             {...viewport}
         >
