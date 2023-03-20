@@ -5,12 +5,14 @@ const useFlyto = (mapRef, geoCoords, mapLoaded, geoReceived) => {
     useEffect(() => {
         const flyToAnimation = async () => {
 			if(mapLoaded && geoReceived) {
+                console.log('preloading')
 				mapRef.current.flyTo({
 					center: [geoCoords.geoLong, geoCoords.geoLat], // The coordinates returned from geolocation api where we 'fly to'
 					zoom: 13, // The zoom level of the map that the flyTo stops on
 					preloadOnly: true,
 				})
 				await mapRef.current.once('idle')
+                console.log('%c I believe I can flyyyyyyyy', 'color: #ED2290')
 				mapRef.current.flyTo({
 					center: [geoCoords.geoLong, geoCoords.geoLat], // The coordinates returned from geolocation api where we 'fly to'
 					zoom: 13, // The zoom level of the map that the flyTo stops on

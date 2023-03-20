@@ -12,6 +12,7 @@ const muiStyles = createTheme({
                     height: '100%',
                     backgroundImage: 'linear-gradient(180deg, #fff, rgba(255, 255, 255, .66) 20%, rgba(255, 255, 255, .66) 80%, #fff)',
                     backdropFilter: 'blur(6px)',
+                    // backgroundBlendMode: 'normal',
                 }
             }
         }

@@ -52,7 +52,12 @@ const GlowstikMap = () => {
                     getCurrentGeoPosition((position) => {
                         setGeoCoords({geoLat: position.coords.latitude, geoLong: position.coords.longitude})
                         setGeoReceived(true)
-                    })
+                    },
+                    () => {
+                        setGeoCoords({geoLat: 39.7448684, geoLong: -104.9876661})
+                        setGeoReceived(true)
+                    }
+                    )
                 }}
                 onRender={(e) => {
                     setDialogOpen(true)
