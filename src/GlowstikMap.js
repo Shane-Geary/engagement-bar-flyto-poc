@@ -1,6 +1,7 @@
 // Copyright 2023 Glowstik Inc. All rights reserved!
 import {useState, useRef} from 'react'
 
+import mapboxgl from 'mapbox-gl'
 import ReactMapGL from 'react-map-gl'
 import {Dialog} from '@mui/material'
 import {ThemeProvider} from '@mui/material/styles'
@@ -10,6 +11,9 @@ import useFlyto from './Hooks/useFlyto'
 import muiStyles from './Theme/muiStyles'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
+
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
 
 const GlowstikMap = () => {
 
