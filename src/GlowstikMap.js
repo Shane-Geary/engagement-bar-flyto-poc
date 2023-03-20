@@ -52,6 +52,7 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
                     setViewport(e.viewState)
                 }}
                 onLoad={() => {
+                    setDialogOpen(true)
                     setMapLoaded(true)
                     getCurrentGeoPosition((position) => {
                         setGeoCoords({geoLat: position.coords.latitude, geoLong: position.coords.longitude})
@@ -63,9 +64,6 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
                     }
                     )
                 }}
-                onRender={(e) => {
-                    setDialogOpen(true)
-                }}
                 {...viewport}
             >
                 <Dialog
@@ -74,7 +72,7 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
                         setDialogOpen(false)
                     }}
                     sx={{
-                        opacity: 0
+                        // opacity: 0
                     }}
                 >
                     <div>
