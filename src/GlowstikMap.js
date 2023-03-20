@@ -20,8 +20,8 @@ const GlowstikMap = () => {
     const mapRef = useRef(null)
 
     const [viewport, setViewport] = useState({
-        latitude: 0,
-        longitude: 0,
+        latitude: 34.601928,
+        longitude: -102.563212,
         zoom: 1.5
     })
 
