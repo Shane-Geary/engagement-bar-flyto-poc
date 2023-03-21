@@ -7,7 +7,7 @@ import {Dialog} from '@mui/material'
 import {ThemeProvider} from '@mui/material/styles'
 
 import getCurrentGeoPosition from './Hooks/useGeolocation'
-// import useFlyto from './Hooks/useFlyto'
+import useFlyto from './Hooks/useFlyto'
 import muiStyles from './Theme/muiStyles'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -37,11 +37,10 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
 
     const [geoReceived, setGeoReceived] = useState(false)
     const [dialogOpen, setDialogOpen] = useState(false)
-    const [flyToPreloaded, setFlyToPreloaded] = useState(false)
 
     const [geoCoords, setGeoCoords] = useState({geoLat: null, geoLong: null})
 
-    // useFlyto(mapRef, geoCoords, mapLoaded, geoReceived, flyToEngaged)
+    const {flyToPreloaded, handleClick} = useFlyto(mapRef, geoCoords, mapLoaded, geoReceived)
 
     const handleResize = () => {
         const newWidth = viewportWidth
@@ -54,31 +53,6 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
                        .1
         setViewport({ ...viewport, width: newWidth, height: newHeight, zoom: newZoom })
     }
-    
-
-    useEffect(() => {
-        console.log(viewportWidth, viewportHeight)
-        console.log(viewport.zoom)
-        const flyToAnimation = async () => {
-			if(mapLoaded && geoReceived) {
-                console.log('preloading')
-				mapRef.current.flyTo({
-					center: [geoCoords.geoLong, geoCoords.geoLat], // The coordinates returned from geolocation api where we 'fly to'
-					zoom: 13, // The zoom level of the map that the flyTo stops on
-					preloadOnly: true,
-				})
-                await mapRef.current.once('idle', () => {
-                    console.log('Fly to preloaded')
-                    setFlyToPreloaded(true)
-                })
-			}
-		}
-		flyToAnimation()
-        window.addEventListener('resize', handleResize)
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
-    }, [mapRef, mapLoaded, geoReceived, geoCoords])
 
 
     return (
@@ -125,18 +99,7 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
                 >
                     <div>
                         <button
-                            onClick={() => {
-                                if(flyToPreloaded) {
-                                    mapRef.current.flyTo({
-                                        center: [geoCoords.geoLong, geoCoords.geoLat], // The coordinates returned from geolocation api where we 'fly to'
-                                        zoom: 13, // The zoom level of the map that the flyTo stops on
-                                        duration: 4000, // How long the animation takes from start to finish
-                                        easing: (t) => { // easing function
-                                            return t
-                                        }
-                                    })
-                                }
-                            }}
+                            onClick={handleClick}
                         >
                             {flyToPreloaded ? 'Fly To' : 'Preloading...'}
                         </button>
