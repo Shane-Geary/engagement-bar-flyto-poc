@@ -22,10 +22,17 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
     const viewportWidth = visualViewport.width
     const viewportHeight = visualViewport.height
 
+    const zoomLevels = viewportWidth > 1200 ? .9 :
+                        viewportWidth > 992 ? .5 :
+                        viewportWidth > 768 ? .4 :
+                        viewportWidth > 576 ? .3 :
+                        viewportWidth > 400 ? .2 :
+                        .1
+
     const [viewport, setViewport] = useState({
         latitude: 34.601928,
         longitude: -102.563212,
-        zoom: .9
+        zoom: zoomLevels
     })
 
     const [geoReceived, setGeoReceived] = useState(false)
@@ -39,7 +46,7 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
     const handleResize = () => {
         const newWidth = viewportWidth
         const newHeight = viewportHeight
-        const newZoom = newWidth > 1200 ? .6 :
+        const newZoom = newWidth > 1200 ? .9 :
                        newWidth > 992 ? .5 :
                        newWidth > 768 ? .4 :
                        newWidth > 576 ? .3 :
@@ -51,6 +58,7 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
 
     useEffect(() => {
         console.log(viewportWidth, viewportHeight)
+        console.log(viewport.zoom)
         const flyToAnimation = async () => {
 			if(mapLoaded && geoReceived) {
                 console.log('preloading')
