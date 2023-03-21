@@ -7,7 +7,7 @@ import {Dialog} from '@mui/material'
 import {ThemeProvider} from '@mui/material/styles'
 
 import getCurrentGeoPosition from './Hooks/useGeolocation'
-import useFlyto from './Hooks/useFlyto'
+// import useFlyto from './Hooks/useFlyto'
 import muiStyles from './Theme/muiStyles'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -19,10 +19,20 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
 
     const mapRef = useRef(null)
 
+    const viewportWidth = visualViewport.width
+    const viewportHeight = visualViewport.height
+
+    const dynamicZoomLevels = viewportWidth > 1200 ? .6 :
+                            viewportWidth > 992 ? .5 :
+                            viewportWidth > 768 ? .4 :
+                            viewportWidth > 576 ? .3 :
+                            viewportWidth > 400 ? .2 :
+                            .1
+
     const [viewport, setViewport] = useState({
         latitude: 34.601928,
         longitude: -102.563212,
-        zoom: .9
+        zoom: dynamicZoomLevels
     })
 
     const [geoReceived, setGeoReceived] = useState(false)
@@ -33,7 +43,21 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
 
     // useFlyto(mapRef, geoCoords, mapLoaded, geoReceived, flyToEngaged)
 
+    const handleResize = () => {
+        const newWidth = viewportWidth
+        const newHeight = viewportHeight
+        const newZoom = newWidth > 1200 ? .6 :
+                       newWidth > 992 ? .5 :
+                       newWidth > 768 ? .4 :
+                       newWidth > 576 ? .3 :
+                       newWidth > 400 ? .2 :
+                       .1
+        setViewport({ ...viewport, width: newWidth, height: newHeight, zoom: newZoom })
+    }
+    
+
     useEffect(() => {
+        console.log(viewportWidth, viewportHeight)
         const flyToAnimation = async () => {
 			if(mapLoaded && geoReceived) {
                 console.log('preloading')
@@ -49,6 +73,10 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
 			}
 		}
 		flyToAnimation()
+        window.addEventListener('resize', handleResize)
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
     }, [mapRef, mapLoaded, geoReceived, geoCoords])
 
 
@@ -90,9 +118,9 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
                     onClose={() => {
                         setDialogOpen(false)
                     }}
-                    sx={{
-                        // opacity: 0
-                    }}
+                    // sx={{
+                    //     opacity: 0
+                    // }}
                 >
                     <div>
                         <button
