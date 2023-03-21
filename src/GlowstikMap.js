@@ -27,10 +27,11 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
 
     const [geoReceived, setGeoReceived] = useState(false)
     const [dialogOpen, setDialogOpen] = useState(false)
+    const [flyToEngaged, setFlyToEngaged] = useState(false)
 
     const [geoCoords, setGeoCoords] = useState({geoLat: null, geoLong: null})
 
-    useFlyto(mapRef, geoCoords, mapLoaded, geoReceived)
+    useFlyto(mapRef, geoCoords, mapLoaded, geoReceived, flyToEngaged)
 
 
     return (
@@ -77,6 +78,13 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
                 >
                     <div>
                         {/* Hello World */}
+                        <button
+                            onClick={(e) => {
+                                setFlyToEngaged(true)
+                            }}
+                        >
+                            Fly To
+                        </button>
                     </div>
                 </Dialog>
             </ReactMapGL>
