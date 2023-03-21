@@ -17,7 +17,7 @@ mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
 
 /**
 * React component for rendering a Map using MapboxGL library.
-* @param {boolean} mapLoaded - State for tracking whether the mao has loaded
+* @param {boolean} mapLoaded - State for tracking whether the map has loaded
 * @param {function} setMapLoaded - Function that updates the mapLoaded state
 * @returns {function} - React functional component
 */
