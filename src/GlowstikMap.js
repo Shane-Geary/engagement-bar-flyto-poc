@@ -22,17 +22,10 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
     const viewportWidth = visualViewport.width
     const viewportHeight = visualViewport.height
 
-    const dynamicZoomLevels = viewportWidth > 1200 ? .6 :
-                            viewportWidth > 992 ? .5 :
-                            viewportWidth > 768 ? .4 :
-                            viewportWidth > 576 ? .3 :
-                            viewportWidth > 400 ? .2 :
-                            .1
-
     const [viewport, setViewport] = useState({
         latitude: 34.601928,
         longitude: -102.563212,
-        zoom: dynamicZoomLevels
+        zoom: .9
     })
 
     const [geoReceived, setGeoReceived] = useState(false)
