@@ -1,5 +1,5 @@
 // Copyright 2023 Glowstik Inc. All rights reserved!
-import {useState, useRef} from 'react'
+import {useState, useRef, useEffect} from 'react'
 
 import mapboxgl from 'mapbox-gl'
 import ReactMapGL from 'react-map-gl'
@@ -27,11 +27,29 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
 
     const [geoReceived, setGeoReceived] = useState(false)
     const [dialogOpen, setDialogOpen] = useState(false)
-    const [flyToEngaged, setFlyToEngaged] = useState(false)
+    const [flyToPreloaded, setFlyToPreloaded] = useState(false)
 
     const [geoCoords, setGeoCoords] = useState({geoLat: null, geoLong: null})
 
-    useFlyto(mapRef, geoCoords, mapLoaded, geoReceived, flyToEngaged)
+    // useFlyto(mapRef, geoCoords, mapLoaded, geoReceived, flyToEngaged)
+
+    useEffect(() => {
+        const flyToAnimation = async () => {
+			if(mapLoaded && geoReceived) {
+                console.log('preloading')
+				mapRef.current.flyTo({
+					center: [geoCoords.geoLong, geoCoords.geoLat], // The coordinates returned from geolocation api where we 'fly to'
+					zoom: 13, // The zoom level of the map that the flyTo stops on
+					preloadOnly: true,
+				})
+                await mapRef.current.once('idle', () => {
+                    console.log('Fly to preloaded')
+                    setFlyToPreloaded(true)
+                })
+			}
+		}
+		flyToAnimation()
+    }, [mapRef, mapLoaded, geoReceived, geoCoords])
 
 
     return (
@@ -79,8 +97,17 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
                     <div>
                         {/* Hello World */}
                         <button
-                            onClick={(e) => {
-                                setFlyToEngaged(true)
+                            onClick={() => {
+                                if(flyToPreloaded) {
+                                    mapRef.current.flyTo({
+                                        center: [geoCoords.geoLong, geoCoords.geoLat], // The coordinates returned from geolocation api where we 'fly to'
+                                        zoom: 13, // The zoom level of the map that the flyTo stops on
+                                        duration: 4000, // How long the animation takes from start to finish
+                                        easing: (t) => { // easing function
+                                            return t
+                                        }
+                                    })
+                                }
                             }}
                         >
                             Fly To
