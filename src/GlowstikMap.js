@@ -95,7 +95,6 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
                     }}
                 >
                     <div>
-                        {/* Hello World */}
                         <button
                             onClick={() => {
                                 if(flyToPreloaded) {
@@ -110,7 +109,7 @@ const GlowstikMap = ({mapLoaded, setMapLoaded}) => {
                                 }
                             }}
                         >
-                            Fly To
+                            {flyToPreloaded ? 'Fly To' : 'Preloading...'}
                         </button>
                     </div>
                 </Dialog>
